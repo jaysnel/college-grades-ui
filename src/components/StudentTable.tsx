@@ -8,9 +8,9 @@ export default function StudentTable(props: { studentData: any; }) {
     <table className="table-auto bg-slate-800">
         <thead>
             <tr>
-            <th className='border-b border-slate-600 font-medium text-slate-200 text-left'>Song</th>
-            <th>Artist</th>
-            <th>Year</th>
+            <th className='border-b border-slate-600 font-medium text-slate-200 text-left'>Name</th>
+            <th>Wallet</th>
+            <th>Courses</th>
             </tr>
         </thead>
         <tbody className='bg-slate-800'>
