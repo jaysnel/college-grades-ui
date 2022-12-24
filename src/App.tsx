@@ -9,9 +9,6 @@ declare const window: Window &
     ethereum: any
 }
 
-interface PropData {
-  message: string;
-}
 interface IntroData {
   title: string;
   id: number;
