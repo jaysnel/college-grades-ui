@@ -16,21 +16,27 @@ export default function Create() {
                 const provider = new ethers.providers.Web3Provider(ethereum);
                 await provider.send("eth_accounts", []);
                 const signer = await provider.getSigner();
+                console.log(signer);
                 const account = await ethereum.request({method: 'eth_accounts'});
                 console.log(account[0]);
                 const contract = new ethers.Contract(contractAddress, contractABI, signer);
                 console.log(contract)
-                // const addNewStudent = contract.addStudent
+                const addNewStudent = contract.addStudent('Jaylan', 28, account[0]);
+                await addNewStudent();
+                console.log('Student added')
             }
         } catch (err: any) {
-        console.log(err);
+            console.log(err);
         }
     }
 
     useEffect(() => {
-        addNewStudent();
+        // addNewStudent();
     }, [])
   return (
-    <div>Create</div>
+    <>
+        <div>Create</div>
+        <button className='btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={() => {addNewStudent()}}>Add Student</button>
+    </>
   )
 }

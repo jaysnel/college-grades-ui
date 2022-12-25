@@ -12,12 +12,19 @@ interface IntroData {
     title: string;
     id: number;
   }
+
   
   const introData: IntroData = {
     title: "College Grades",
     id: 0,
   };
   
+  type StudentData = {
+    name: string; 
+    age: string; 
+    wallet: string; 
+    courses: number;
+};
 
 export default function Home() {
     const {ethers} = require('ethers');
@@ -26,6 +33,7 @@ export default function Home() {
     const [currentAccount, setCurrentAccount] = useState('');
     const [isError, setIsError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [studentList, setStudentList] = useState<StudentData[]>([]);
   
     const checkIfWalletIsConnected = async () => {
       try {
@@ -54,9 +62,23 @@ export default function Home() {
           await provider.send("eth_requestAccounts", []);
           const signer = provider.getSigner();
           const contract = new ethers.Contract(contractAddress, contractABI, signer)
-          console.log(contract)
+          // console.log(contract)
           const studentCount = await contract.getTotalStudentCount();
-          console.log(studentCount);
+          // console.log(studentCount.toString());
+          for(let i = 0; i < studentCount.toString(); i++) {
+            let student = await contract.getStudentData(i);
+
+            const studentData = {
+                name: student.name,
+                age: student.age.toString(),
+                wallet: student.wallet,
+                courses: student.courses
+            }
+            console.log(studentData)
+            // setStudentList([...studentList, studentData])
+            studentList.push(studentData);
+            console.log('Student Data: ', studentList)
+          }
         }
       } catch (err) {
         console.log(err);
@@ -66,7 +88,7 @@ export default function Home() {
     useEffect(() => {
       checkIfWalletIsConnected();
       getAllStudentData();
-    })
+    }, [])
   
     if(!walletConnected) {
       return (
@@ -76,12 +98,12 @@ export default function Home() {
       )
     }
 
-    console.log(contractABI);
+    // console.log(contractABI);
 
   return (
     <>
         <h1>{introData.title}</h1>
-        <StudentTable studentData='5'/>
+        <StudentTable studentData={studentList}/>
     </>
   )
 }

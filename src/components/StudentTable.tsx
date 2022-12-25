@@ -1,7 +1,8 @@
 import React from 'react'
 
-export default function StudentTable(props: { studentData: any; }) {
-    // const {studentData} = props;
+export default function StudentTable(props: { studentData: object[]; }) {
+    const {studentData} = props;
+    console.log('Student Table: ', studentData)
   return (
     <div className=''>
     <h2>STUDENT TABLE</h2>
@@ -14,6 +15,11 @@ export default function StudentTable(props: { studentData: any; }) {
             </tr>
         </thead>
         <tbody className='bg-slate-800'>
+            {/* {studentData.map((student, idx) => {
+                return (
+                    <td>{student.name}</td>
+                )
+            })} */}
             <tr>
             <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
             <td>Malcolm Lockyer</td>
