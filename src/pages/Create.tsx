@@ -21,7 +21,7 @@ export default function Create() {
                 console.log(account[0]);
                 const contract = new ethers.Contract(contractAddress, contractABI, signer);
                 console.log(contract)
-                const addNewStudent = contract.addStudent('Jaylan', 28, account[0]);
+                const addNewStudent = contract.addStudent('John', 55, '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266');
                 await addNewStudent();
                 console.log('Student added')
             }

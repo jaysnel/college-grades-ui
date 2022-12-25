@@ -9,7 +9,6 @@ export default function StudentTable(props: { studentData: StudentData[]; }) {
     }
     return (
         <div className=''>
-        <h2>STUDENT TABLE</h2>
         <table className="table-auto bg-slate-800">
             <thead>
                 <tr>
