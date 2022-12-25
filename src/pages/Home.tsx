@@ -7,18 +7,6 @@ import ConnectTowallet from '../components/ConnectTowallet';
     typeof globalThis & {
         ethereum: any
     }
-
-    interface IntroData {
-        title: string;
-        id: number;
-    }
-
-  
-    const introData: IntroData = {
-        title: "College Grades",
-        id: 0,
-    };
-    
     export interface StudentData {
         name: string; 
         age: string; 
@@ -68,7 +56,6 @@ export default function Home() {
                 wallet: student.wallet,
                 courses: student.courses
             }
-            // console.log('Student', studentData)
             setStudentList(prevStudentList => [...prevStudentList, studentData])
           }
         }
@@ -92,7 +79,6 @@ export default function Home() {
 
   return (
     <>
-        <h1>{introData.title}</h1>
         <StudentTable studentData={studentList}/>
     </>
   )
