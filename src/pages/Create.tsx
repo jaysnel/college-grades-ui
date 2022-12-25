@@ -14,10 +14,13 @@ export default function Create() {
             const {ethereum} = window;
             if(ethereum) {
                 const provider = new ethers.providers.Web3Provider(ethereum);
-                await provider.send("eth_requestAccounts", []);
-                const signer = provider.getSigner();
+                await provider.send("eth_accounts", []);
+                const signer = await provider.getSigner();
+                const account = await ethereum.request({method: 'eth_accounts'});
+                console.log(account[0]);
                 const contract = new ethers.Contract(contractAddress, contractABI, signer);
-                console.log(contract);
+                console.log(contract)
+                // const addNewStudent = contract.addStudent
             }
         } catch (err: any) {
         console.log(err);
