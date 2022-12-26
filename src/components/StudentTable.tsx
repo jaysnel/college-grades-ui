@@ -1,11 +1,13 @@
+import { useNavigate } from "react-router-dom"
 import {StudentData} from '../pages/Home';
 import Student from './Student';
 
 export default function StudentTable(props: { studentData: StudentData[]; }) {
+    const navigate = useNavigate()
     const {studentData} = props;
     console.log('Student Table: ', studentData)
     const expandStudentData = (id: number) => {
-        console.log(`/student/${id}`);
+        navigate(`/student/${id}`);
     }
     return (
         <div className=''>

@@ -29,7 +29,6 @@ export default function Home() {
           const studentCount = await contract.getTotalStudentCount();
           for(let i = 0; i < studentCount.toString(); i++) {
             let student = await contract.getStudentData(i);
-
             const studentData: StudentData = {
                 name: student.name,
                 age: student.age.toString(),
