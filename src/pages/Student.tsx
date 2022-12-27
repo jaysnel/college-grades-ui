@@ -27,9 +27,7 @@ export default function Student() {
     const showCourseModal = () => {
         setShowModal(showModal ? false : true);
     }
-    const addNewCourse = async () => {
-        console.log('Adding Course')
-    }
+
     const getStudentData = async () => {
         try {
         const {ethereum} = window;
@@ -67,11 +65,17 @@ export default function Student() {
         ?
         <div>Student Not Found</div>
         :
-        <div className={`${showModal ? 'hidden' : ''}`}>
+        <div className={`${showModal ? 'hidden' : 'm-auto flex flex-col justify-center items-center min-h-80 w-2/3 border border-blue-300'}`}>
             <div>
-                {studentInfo.name}
-                {studentInfo.age}
-                {studentInfo.wallet}
+                <div>
+                    {studentInfo.name}
+                </div>
+                <div>
+                    {studentInfo.age}
+                </div>
+                <div>
+                    {studentInfo.wallet}
+                </div>
             </div>
             <Button buttonFunction={showCourseModal} buttonText='Add Course'/>
         </div>

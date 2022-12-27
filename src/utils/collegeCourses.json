@@ -1,0 +1,26 @@
+[
+    {
+        "name": "history",
+        "credits": "4"
+    },
+    {
+        "name": "science",
+        "credits": "4"
+    },
+    {
+        "name": "literature",
+        "credits": "4"
+    },
+    {
+        "name": "business",
+        "credits": "3"
+    },
+    {
+        "name": "art",
+        "credits": "3"
+    },
+    {
+        "name": "bowling",
+        "credits": "2"
+    }
+  ]
