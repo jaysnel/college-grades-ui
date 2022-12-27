@@ -45,7 +45,7 @@ export default function Student() {
                     name: student.name, 
                     age: student.age.toString(),
                     wallet: student.wallet,
-                    courses: []
+                    courses: student.courses
                 })
             }
           }
@@ -75,6 +75,19 @@ export default function Student() {
                 </div>
                 <div>
                     {studentInfo.wallet}
+                </div>
+                <div>
+                    {
+                        studentInfo.courses.map((course) =>{
+                            return (
+                                <div>
+                                    <p>{course['name']}</p>
+                                    <p>{Number(course['credits'])}</p>
+                                    <p>{Number(course['grade'])}</p>
+                                </div>
+                            )
+                        })
+                    }
                 </div>
             </div>
             <Button buttonFunction={showCourseModal} buttonText='Add Course'/>

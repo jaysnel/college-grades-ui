@@ -16,7 +16,7 @@ export default function AddCourse(props: {showModal: boolean; showCourseModal: a
   const contractAddress = '0x261d5ADa2C89369E1AfCAA98d52dEb124DD9f0Ff';
   const [courseName, setCourseName] = React.useState<string>('');
   const [courseCredit, setCourseCredit] = React.useState<string>('');
-  const [courseGrade, setCourseGrade] = React.useState<number>(0);
+  const [courseGrade, setCourseGrade] = React.useState<any>(undefined); // Not something i want to do but i want to make sure the input starts as blank, otherwise the UX is bad since you have to highlight and delete. But ths does cause an error but it does not effect the application
   const min = 0;
   const max = 100;
   const updateCourseName = async (e: { target: { value: string; }; }) => {
@@ -41,8 +41,9 @@ export default function AddCourse(props: {showModal: boolean; showCourseModal: a
             await provider.send("eth_requestAccounts", []);
             const signer = provider.getSigner();
             const contract = new ethers.Contract(contractAddress, contractABI, signer)
-            // const addStudentCourse = await contract.addCourse()
-            // console.log(studentId, contract);
+            const addStudentCourse = contract.addCourse(studentId, courseName, courseCredit, courseGrade)
+            await addStudentCourse();
+            console.log(studentId, courseName, courseCredit, courseGrade);
             const studentCourseData = {
                 id: studentId,
                 courseName,
