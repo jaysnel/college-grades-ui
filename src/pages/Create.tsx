@@ -1,5 +1,6 @@
 import {useEffect} from 'react'
 import contractABI from '../utils/contractABI.json';
+import Button from '../components/Button';
 
 declare const window: Window &
   typeof globalThis & {
@@ -26,7 +27,7 @@ export default function Create() {
                 console.log('Student added')
             }
         } catch (err: any) {
-            console.log(err);
+            console.log('ERROR: ', err);
         }
     }
 
@@ -36,7 +37,7 @@ export default function Create() {
   return (
     <>
         <div>Create</div>
-        <button className='btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={() => {addNewStudent()}}>Add Student</button>
+        <Button buttonFunction={addNewStudent} buttonText="Add Student"/>
     </>
   )
 }

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import contractABI from '../utils/contractABI.json';
+import Button from "../components/Button";
+import AddCourse from "../components/AddCourse";
 
 declare const window: Window &
 typeof globalThis & {
@@ -8,6 +10,7 @@ typeof globalThis & {
 }
 
 export default function Student() {
+    const [showModal, setShowModal] = React.useState<boolean>(false);
     const [studentDoesntExist, setStudetnDoesntExist] = React.useState<boolean>(false);
     const [studentInfo, setStudentInfo] = useState<{
         name: string,
@@ -21,6 +24,12 @@ export default function Student() {
     const {ethers} = require('ethers');
     const contractAddress = '0x261d5ADa2C89369E1AfCAA98d52dEb124DD9f0Ff';
     
+    const showCourseModal = () => {
+        setShowModal(showModal ? false : true);
+    }
+    const addNewCourse = async () => {
+        console.log('Adding Course')
+    }
     const getStudentData = async () => {
         try {
         const {ethereum} = window;
@@ -58,12 +67,16 @@ export default function Student() {
         ?
         <div>Student Not Found</div>
         :
-        <div>
-            {studentInfo.name}
-            {studentInfo.age}
-            {studentInfo.wallet}
+        <div className={`${showModal ? 'hidden' : ''}`}>
+            <div>
+                {studentInfo.name}
+                {studentInfo.age}
+                {studentInfo.wallet}
+            </div>
+            <Button buttonFunction={showCourseModal} buttonText='Add Course'/>
         </div>
     }
+    <AddCourse showModal={showModal} showCourseModal={showCourseModal} studentId={studentIdNumber}/>
     </>
   )
 }

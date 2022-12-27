@@ -8,9 +8,9 @@ export default function Student(props: { individualStudent: IndividualStudent; i
     return (
         <tr 
         onClick={() => {studentFunction && studentFunction(id)}}
-        className='text-slate-200 hover:cursor-pointer'>
-            <td>{individualStudent.name}</td>
-            <td>{individualStudent.age}</td>
+        className='hover:bg-black text-slate-200 hover:cursor-pointer border-b'>
+            <td className="border-r">{individualStudent.name}</td>
+            <td className="border-r">{individualStudent.age}</td>
             <td>{individualStudent.wallet}</td>
         </tr>
     )
