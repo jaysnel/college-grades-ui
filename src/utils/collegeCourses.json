@@ -1,26 +1,23 @@
 [
     {
-        "name": "history",
-        "credits": "4"
+        "name": "Select Course"
     },
     {
-        "name": "science",
-        "credits": "4"
+        "name": "history"
     },
     {
-        "name": "literature",
-        "credits": "4"
+        "name": "science"
     },
     {
-        "name": "business",
-        "credits": "3"
+        "name": "literature"
     },
     {
-        "name": "art",
-        "credits": "3"
+        "name": "business"
     },
     {
-        "name": "bowling",
-        "credits": "2"
+        "name": "art"
+    },
+    {
+        "name": "bowling"
     }
   ]

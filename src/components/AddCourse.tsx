@@ -16,19 +16,21 @@ export default function AddCourse(props: {showModal: boolean; showCourseModal: a
   const contractAddress = '0x261d5ADa2C89369E1AfCAA98d52dEb124DD9f0Ff';
   const [courseName, setCourseName] = React.useState<string>('');
   const [courseCredit, setCourseCredit] = React.useState<string>('');
-  const [courseGrade, setCourseGrade] = React.useState<string>('');
-
+  const [courseGrade, setCourseGrade] = React.useState<number>(0);
+  const min = 0;
+  const max = 100;
   const updateCourseName = async (e: { target: { value: string; }; }) => {
-    let value = e.target.value;
+    const value = e.target.value;
     setCourseName(value);
   }
   const updateCourseCredit = (e: { target: { value: string; }; }) => {
-    let value = e.target.value;
+    const value = e.target.value;
     setCourseCredit(value);
   }
   const updateCourseGrade = (e: { target: { value: string; }; }) => {
-    let value = e.target.value;
-    setCourseGrade(value);
+    const value = Math.max(min, Math.min(max, Number(e.target.value)));
+    // changing this to number. With typescript was running into weird error on using onChange. Not sure how to fix it at this moment.
+    setCourseGrade(Number(value));
   }
 
   const addCourse = async () => {
@@ -56,7 +58,7 @@ export default function AddCourse(props: {showModal: boolean; showCourseModal: a
   return (
     <div className={`${!showModal ? 'hidden': 'relative m-auto flex flex-col justify-center items-center min-h-80 w-2/3 border border-blue-300'}`}>
         <div 
-        className='hover:cursor-pointer absolute top-0 right-0 mr-5 mt-5 p-1 bg-blue-300'
+        className='hover:cursor-pointer absolute top-0 right-0 mr-5 mt-5 p-1'
         onClick={() => {showCourseModal && showCourseModal()}}>X</div>
         <div className='w-60'>
             <h3 className='mt-5'>Student ID</h3>
@@ -64,25 +66,36 @@ export default function AddCourse(props: {showModal: boolean; showCourseModal: a
             value={studentId}
             className='w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="text" disabled placeholder="Student ID" name="studentId" id="" />
             <h3 className='mt-5'>Course Name</h3>
-            <select onChange={updateCourseName} className='w-full shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'>
+            <select 
+            defaultValue='Select Course'
+            onChange={updateCourseName} className='w-full shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'>
             {
-                collegeCourses.map((course) => (
-                    <option value={course.name}>{course.name}</option>
+                collegeCourses.map((course, idx) => (
+                    <option 
+                    disabled={course.name === 'Select Course' ? true : false}
+                    key={idx}
+                    value={course.name}>{course.name}</option>
                 ))
             }
             </select>
             <h3 className='mt-5'>Course Credit</h3>
-            <select onChange={updateCourseCredit} className='w-full shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'>
+            <select 
+            defaultValue='Select Credit'
+            onChange={updateCourseCredit} className='w-full shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'>
             {
-                collegeCredits.map((course) => (
-                    <option value={course.credit}>{course.credit}</option>
+                collegeCredits.map((course, idx) => (
+                    <option 
+                    disabled={course.credit === 'Select Credit' ? true : false}
+                    key={idx}
+                    value={course.credit}>{course.credit}</option>
                 ))
             }
             </select>
             <h3 className='mt-5'>Course Grade</h3>
             <input 
             onChange={updateCourseGrade}
-            className='w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="text" placeholder="Course Grade" name="courseGrade" id="" />
+            value={courseGrade}
+            className='w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="number" placeholder="Course Grade" name="courseGrade" id="" />
         </div>
         <div className='w-60 my-5'>
             <Button buttonFunction={addCourse} buttonText='Add'/>
