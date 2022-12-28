@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 
 export default function NavBar() {
   return (
-    <div>
-        <Link to="/">Home</Link>
-        <Link to="/create">New Student</Link>
+    <div className='flex justify-center content-between'>
+        <Link className='px-2 hover:bg-slate-200' to="/">Directory</Link>
+        <Link className='px-2 hover:bg-slate-200' to="/create">Add Student</Link>
     </div>
   )
 }

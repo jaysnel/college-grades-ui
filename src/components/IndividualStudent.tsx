@@ -1,9 +1,9 @@
-interface IndividualStudent {
+interface Student {
     name: string; 
     age: string; 
     wallet: string; 
 }
-export default function Student(props: { individualStudent: IndividualStudent; id: number; studentFunction: Function}) {
+export default function IndividualStudent(props: { individualStudent: Student; id: number; studentFunction: Function}) {
     const {individualStudent, id, studentFunction} = props
     return (
         <tr 

@@ -57,7 +57,7 @@ export default function AddCourse(props: {showModal: boolean; showCourseModal: a
         }
   }
   return (
-    <div className={`${!showModal ? 'hidden': 'relative m-auto flex flex-col justify-center items-center min-h-80 w-2/3 border border-blue-300'}`}>
+    <div className={`${!showModal ? 'hidden': 'relative m-auto flex flex-col justify-center items-center min-h-80 border border-blue-300'}`}>
         <div 
         className='hover:cursor-pointer absolute top-0 right-0 mr-5 mt-5 p-1'
         onClick={() => {showCourseModal && showCourseModal()}}>X</div>

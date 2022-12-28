@@ -51,7 +51,7 @@ function App() {
     <BrowserRouter>
       <NavBar />
       <Routes>
-        <Route path='/' element={<Home />}>Home</Route>
+        <Route path='/' element={<Home />}>Directory</Route>
         <Route path='/create' element={<Create />}>Add Student</Route>
         <Route path='/student/:studentId' element={<Student />}>Student</Route>
       </Routes>

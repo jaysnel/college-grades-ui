@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import {StudentData} from '../pages/Home';
-import Student from './Student';
+import IndividualStudent from './IndividualStudent';
 
 export default function StudentTable(props: { studentData: StudentData[]; }) {
     const navigate = useNavigate()
@@ -22,7 +22,7 @@ export default function StudentTable(props: { studentData: StudentData[]; }) {
             <tbody className='bg-slate-800'>
                 {studentData.map((student, idx) => {
                     return (
-                        <Student 
+                        <IndividualStudent 
                         studentFunction={expandStudentData}
                         key={idx}
                         id={idx}

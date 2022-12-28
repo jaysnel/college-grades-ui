@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import React, {useEffect} from 'react'
 import contractABI from '../utils/contractABI.json';
 import Button from '../components/Button';
 
@@ -10,6 +10,23 @@ declare const window: Window &
 export default function Create() {
     const {ethers} = require('ethers');
     const contractAddress = '0x261d5ADa2C89369E1AfCAA98d52dEb124DD9f0Ff'
+    const [studentName, setStudentName] = React.useState<string>('');
+    const [studentAge, setStudentAge] = React.useState<number>(0);
+    const [studentWallet, setStudentWallet] = React.useState<string>('');
+    
+    const updateStudentName = (e: { target: { value: string; }; }) => {
+        const value = e.target.value;
+        setStudentName(value);
+    }
+    const updateStudentAge = (e: { target: { value: string; }; }) => {
+        const value = e.target.value;
+        setStudentAge(Number(value));
+    }
+    const updateStudentWallet = (e: { target: { value: string; }; }) => {
+        const value = e.target.value;
+        setStudentWallet(value);
+    }
+
     const addNewStudent = async () => {
         try {
             const {ethereum} = window;
@@ -22,7 +39,7 @@ export default function Create() {
                 console.log(account[0]);
                 const contract = new ethers.Contract(contractAddress, contractABI, signer);
                 console.log(contract)
-                const addNewStudent = contract.addStudent('John', 55, '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266');
+                const addNewStudent = contract.addStudent(studentName, studentAge, studentWallet);
                 await addNewStudent();
                 console.log('Student added')
             }
@@ -31,12 +48,23 @@ export default function Create() {
         }
     }
 
-    useEffect(() => {
-        // addNewStudent();
-    }, [])
   return (
     <>
-        <div>Create</div>
+        <h3 className='mt-5'>Student Name</h3>
+        <input 
+        onChange={updateStudentName}
+        value={studentName}
+        className='w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="text" placeholder="Student Name" name="studentName" id="" />
+        <h3 className='mt-5'>Student Age</h3>
+        <input 
+        onChange={updateStudentAge}
+        value={studentAge}
+        className='w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="number" placeholder="Student Age" name="studentAge" id="" />
+        <h3 className='mt-5'>Student Wallet</h3>
+        <input 
+        onChange={updateStudentWallet}
+        value={studentWallet}
+        className='w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="text" placeholder="Student Wallet" name="studentWallet" id="" />
         <Button buttonFunction={addNewStudent} buttonText="Add Student"/>
     </>
   )

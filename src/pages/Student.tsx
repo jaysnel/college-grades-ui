@@ -65,7 +65,7 @@ export default function Student() {
         ?
         <div>Student Not Found</div>
         :
-        <div className={`${showModal ? 'hidden' : 'm-auto flex flex-col justify-center items-center min-h-80 w-2/3 border border-blue-300'}`}>
+        <div className={`${showModal ? 'hidden' : 'm-auto flex flex-col justify-center items-center min-h-80 border border-blue-300'}`}>
             <div>
                 <div>
                     {studentInfo.name}
@@ -76,19 +76,28 @@ export default function Student() {
                 <div>
                     {studentInfo.wallet}
                 </div>
-                <div>
-                    {
-                        studentInfo.courses.map((course) =>{
+                <>
+                <thead>
+                    <tr>
+                        <th className="pr-5">Course</th>
+                        <th className="pr-5">Credits</th>
+                        <th className="pr-5">Grade</th>
+                    </tr>
+                </thead>
+                <tbody className=''>
+                {
+                        studentInfo.courses.map((course, idx) =>{
                             return (
-                                <div>
-                                    <p>{course['name']}</p>
-                                    <p>{Number(course['credits'])}</p>
-                                    <p>{Number(course['grade'])}</p>
-                                </div>
+                                <tr key={idx}>
+                                    <td className="pr-5">{course['name']}</td>
+                                    <td className="pr-5">{Number(course['credits'])}</td>
+                                    <td className="pr-5">{Number(course['grade'])}</td>
+                                </tr>
                             )
                         })
                     }
-                </div>
+                </tbody>
+                </>
             </div>
             <Button buttonFunction={showCourseModal} buttonText='Add Course'/>
         </div>
