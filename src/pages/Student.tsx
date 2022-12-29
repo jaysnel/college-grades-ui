@@ -37,7 +37,6 @@ export default function Student() {
             const signer = provider.getSigner();
             const contract = new ethers.Contract(contractAddress, contractABI, signer)
             const student = await contract.getStudentData(studentIdNumber);
-            console.log('Student: ', student);
             if(student.name === '') {
                 setStudetnDoesntExist(true)
             } else {

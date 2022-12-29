@@ -40,10 +40,8 @@ export default function AddCourse(props: {showModal: boolean; showCourseModal: a
             const provider = new ethers.providers.Web3Provider(ethereum);
             await provider.send("eth_requestAccounts", []);
             const signer = provider.getSigner();
-            const contract = new ethers.Contract(contractAddress, contractABI, signer)
-            const addStudentCourse = contract.addCourse(studentId, courseName, courseCredit, courseGrade)
-            await addStudentCourse();
-            console.log(studentId, courseName, courseCredit, courseGrade);
+            const contract = new ethers.Contract(contractAddress, contractABI, signer);
+            await contract.addCourse(studentId, courseName, courseCredit, courseGrade);
             const studentCourseData = {
                 id: studentId,
                 courseName,

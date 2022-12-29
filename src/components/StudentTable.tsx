@@ -5,7 +5,6 @@ import IndividualStudent from './IndividualStudent';
 export default function StudentTable(props: { studentData: StudentData[]; }) {
     const navigate = useNavigate()
     const {studentData} = props;
-    console.log('Student Table: ', studentData)
     const expandStudentData = (id: number) => {
         navigate(`/student/${id}`);
     }

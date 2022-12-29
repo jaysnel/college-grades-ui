@@ -34,14 +34,9 @@ export default function Create() {
                 const provider = new ethers.providers.Web3Provider(ethereum);
                 await provider.send("eth_accounts", []);
                 const signer = await provider.getSigner();
-                console.log(signer);
-                const account = await ethereum.request({method: 'eth_accounts'});
-                console.log(account[0]);
+                // const account = await ethereum.request({method: 'eth_accounts'});
                 const contract = new ethers.Contract(contractAddress, contractABI, signer);
-                console.log(contract)
-                const addNewStudent = contract.addStudent(studentName, studentAge, studentWallet);
-                await addNewStudent();
-                console.log('Student added')
+                await contract.addStudent(studentName, studentAge, studentWallet);
             }
         } catch (err: any) {
             console.log('ERROR: ', err);
