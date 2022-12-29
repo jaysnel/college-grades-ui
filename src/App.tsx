@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import NavBar from './components/NavBar';
@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Create from './pages/Create';
 import Student from './pages/Student';
 import ConnectTowallet from './components/ConnectTowallet';
+import Spinner from './components/Spinner';
 
 declare const window: Window &
   typeof globalThis & {
@@ -13,6 +14,7 @@ declare const window: Window &
   }
 
 function App() {
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [walletConnected, setWalletConnected] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
     
@@ -27,9 +29,11 @@ function App() {
           setErrorMessage('No wallet found. Connect to a wallet');
         }
       }
+      setIsLoading(false);
     } catch (err: any) {
       console.log(err);
       setErrorMessage(err.message);
+      setIsLoading(false);
     }
   }
 
@@ -37,11 +41,18 @@ function App() {
     checkIfWalletIsConnected();
   }, [])
 
+  if(isLoading) {
+    return (
+      <div className="flex justify-center mt-5"><Spinner /></div>
+    )
+  }
 
   if(!walletConnected) {
     return (
       <>
+        <div className="flex justify-center mt-5">
           <ConnectTowallet message={errorMessage}/>
+        </div>
       </>
     )
   }
