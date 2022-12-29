@@ -76,6 +76,8 @@ function App() {
         <Route path='/student/:studentId' element={<Student />}>Student</Route>
       </Routes>
     </BrowserRouter>
+    <div className='mt-5 text-center'>Created By Jaylan Snelson</div>
+    <div className='mt-1 text-center underline hover:text-slate-600'><a href='https://github.com/jaysnel/college-grades-ui' target='_blank' rel="noreferrer">Github</a></div>
     </div>
   );
 }
