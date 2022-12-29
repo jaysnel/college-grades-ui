@@ -17,7 +17,26 @@ export default function Home() {
     const {ethers} = require('ethers');
     const contractAddress = '0x261d5ADa2C89369E1AfCAA98d52dEb124DD9f0Ff'
     const [studentList, setStudentList] = useState<StudentData[]>([]);
-  
+    const [filteredStudentList, setFilteredStudentList] = useState<StudentData[]>([]);
+    
+    const searchStudentNames = (e: any) => {
+      const value = e.target.value;
+      const filtered = studentList.filter((name) => name.name.toLowerCase().includes(value.toLowerCase()));
+      setFilteredStudentList(filtered);
+    }
+
+    const searchStudentAges = (e: any) => {
+      const value = e.target.value;
+      const filtered = studentList.filter((name) => name.age.toLowerCase().includes(value.toLowerCase()));
+      setFilteredStudentList(filtered);
+    }
+
+    const searchStudentWallets = (e: any) => {
+      const value = e.target.value;
+      const filtered = studentList.filter((name) => name.wallet.toLowerCase().includes(value.toLowerCase()));
+      setFilteredStudentList(filtered);
+    }
+
     const getAllStudentData = async () => {
       try {
       const {ethereum} = window;
@@ -49,7 +68,24 @@ export default function Home() {
 
   return (
     <>
-        <StudentTable studentData={studentList}/>
+        <div className='flex flex-row my-5'>
+          <input 
+          onChange={searchStudentNames}
+          className='ml-5 w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' 
+          placeholder='Search Name'
+          type="text" name="Search Name" id="" />
+          <input 
+          onChange={searchStudentAges}
+          className='mx-5 w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' 
+          placeholder='Search Age'
+          type="text" name="Search Age" id="" />
+          <input 
+          onChange={searchStudentWallets}
+          className='mr-5 w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' 
+          placeholder='Search Wallet'
+          type="text" name="Search Wallet" id="" />
+        </div>
+        <StudentTable studentData={filteredStudentList.length === 0 ? studentList : filteredStudentList}/>
     </>
   )
 }

@@ -12,7 +12,9 @@ typeof globalThis & {
 
 export default function AddCourse(props: {showModal: boolean; showCourseModal: any; studentId: number}) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const {showModal, showCourseModal, studentId} = props
+  const {showModal, showCourseModal, studentId} = props;
+  const [validationMessage, setValidationMessage] = React.useState<string>('');
+  const [successMessage, setSuccessMessage] = React.useState<string>('');
   const {ethers} = require('ethers');
   const contractAddress = '0x261d5ADa2C89369E1AfCAA98d52dEb124DD9f0Ff';
   const [courseName, setCourseName] = React.useState<string>('');
@@ -20,6 +22,12 @@ export default function AddCourse(props: {showModal: boolean; showCourseModal: a
   const [courseGrade, setCourseGrade] = React.useState<any>(undefined); // Not something i want to do but i want to make sure the input starts as blank, otherwise the UX is bad since you have to highlight and delete. But ths does cause an error but it does not effect the application
   const min = 0;
   const max = 100;
+
+  const formValidation = (data: {courseName: string; courseCredit: string; courseGrade: number}) => {
+    if(data.courseName === '' || courseCredit === '' || courseGrade === undefined) return false;
+    return true;
+  }
+
   const updateCourseName = async (e: { target: { value: string; }; }) => {
     const value = e.target.value;
     setCourseName(value);
@@ -37,20 +45,26 @@ export default function AddCourse(props: {showModal: boolean; showCourseModal: a
   const addCourse = async () => {
     try {
       setIsLoading(true);
+      setValidationMessage('');
         const {ethereum} = window;
           if(ethereum) {
             const provider = new ethers.providers.Web3Provider(ethereum);
             await provider.send("eth_requestAccounts", []);
             const signer = provider.getSigner();
             const contract = new ethers.Contract(contractAddress, contractABI, signer);
-            await contract.addCourse(studentId, courseName, courseCredit, courseGrade);
             const studentCourseData = {
                 id: studentId,
                 courseName,
                 courseCredit,
                 courseGrade
             }
-            console.log(studentCourseData);
+            const validated = formValidation(studentCourseData);
+            if(validated) {
+              await contract.addCourse(studentId, courseName, courseCredit, courseGrade);
+              setSuccessMessage('Transaction has completed. Give this a few seconds/minutes to show');
+            } else {
+              setValidationMessage('All fields need to be filled out');
+            }
           }
           setIsLoading(false);
         } catch (err) {
@@ -101,6 +115,8 @@ export default function AddCourse(props: {showModal: boolean; showCourseModal: a
             className='w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="number" placeholder="Course Grade" name="courseGrade" id="" />
         </div>
         <div className='w-60 my-5'>
+            {validationMessage !== '' && <div className='text-center mb-5 text-red-400'>{validationMessage}</div>}
+            {successMessage !== '' && <div className='text-center my-5 text-green-400'>{successMessage}</div> }
             {
               isLoading
               ? <div className="flex justify-center"><Spinner /></div>

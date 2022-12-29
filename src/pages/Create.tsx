@@ -10,12 +10,19 @@ declare const window: Window &
 
 export default function Create() {
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
+    const [validationMessage, setValidationMessage] = React.useState<string>('');
+    const [successMessage, setSuccessMessage] = React.useState<string>('');
     const {ethers} = require('ethers');
     const contractAddress = '0x261d5ADa2C89369E1AfCAA98d52dEb124DD9f0Ff'
     const [studentName, setStudentName] = React.useState<string>('');
     const [studentAge, setStudentAge] = React.useState<number>(0);
     const [studentWallet, setStudentWallet] = React.useState<string>('');
     
+    const formValidation = (data: {studentName: string; studentAge: number; studentWallet: string}) => {
+        if(data.studentName === '' || studentAge === 0 || studentWallet === '') return false;
+        return true;
+    }
+
     const updateStudentName = (e: { target: { value: string; }; }) => {
         const value = e.target.value;
         setStudentName(value);
@@ -32,6 +39,7 @@ export default function Create() {
     const addNewStudent = async () => {
         try {
             setIsLoading(true);
+            setValidationMessage('');
             const {ethereum} = window;
             if(ethereum) {
                 const provider = new ethers.providers.Web3Provider(ethereum);
@@ -39,7 +47,18 @@ export default function Create() {
                 const signer = await provider.getSigner();
                 // const account = await ethereum.request({method: 'eth_accounts'});
                 const contract = new ethers.Contract(contractAddress, contractABI, signer);
-                await contract.addStudent(studentName, studentAge, studentWallet);
+                const studentData = {
+                    studentName,
+                    studentAge, 
+                    studentWallet
+                }
+                const validated = formValidation(studentData);
+                if(validated) {
+                    await contract.addStudent(studentName, studentAge, studentWallet);
+                    setSuccessMessage('Transaction has completed. Give this a few seconds/minutes to show');
+                } else {
+                    setValidationMessage('All fields need to be filled out');
+                }
             }
             setIsLoading(false);
         } catch (err: any) {
@@ -65,10 +84,12 @@ export default function Create() {
         onChange={updateStudentWallet}
         value={studentWallet}
         className='w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="text" placeholder="Student Wallet" name="studentWallet" id="" />
+        {validationMessage !== '' && <div className='text-center my-5 text-red-400'>{validationMessage}</div>}
+        {successMessage !== '' && <div className='text-center my-5 text-green-400'>{successMessage}</div> }
         {
             isLoading
-            ? <div className="flex justify-center"><Spinner /></div>
-            : <Button buttonFunction={addNewStudent} buttonText="Add Student"/>
+            ? <div className="flex justify-center mt-5"><Spinner /></div>
+            : <div className="mt-5"><Button buttonFunction={addNewStudent} buttonText="Add Student"/></div>
         }
     </>
   )
