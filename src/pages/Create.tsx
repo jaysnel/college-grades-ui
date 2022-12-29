@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react'
 import contractABI from '../utils/contractABI.json';
 import Button from '../components/Button';
+import Spinner from '../components/Spinner';
 
 declare const window: Window &
   typeof globalThis & {
@@ -8,6 +9,7 @@ declare const window: Window &
 }
 
 export default function Create() {
+    const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const {ethers} = require('ethers');
     const contractAddress = '0x261d5ADa2C89369E1AfCAA98d52dEb124DD9f0Ff'
     const [studentName, setStudentName] = React.useState<string>('');
@@ -29,6 +31,7 @@ export default function Create() {
 
     const addNewStudent = async () => {
         try {
+            setIsLoading(true);
             const {ethereum} = window;
             if(ethereum) {
                 const provider = new ethers.providers.Web3Provider(ethereum);
@@ -38,8 +41,10 @@ export default function Create() {
                 const contract = new ethers.Contract(contractAddress, contractABI, signer);
                 await contract.addStudent(studentName, studentAge, studentWallet);
             }
+            setIsLoading(false);
         } catch (err: any) {
             console.log('ERROR: ', err);
+            setIsLoading(false);
         }
     }
 
@@ -60,7 +65,11 @@ export default function Create() {
         onChange={updateStudentWallet}
         value={studentWallet}
         className='w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="text" placeholder="Student Wallet" name="studentWallet" id="" />
-        <Button buttonFunction={addNewStudent} buttonText="Add Student"/>
+        {
+            isLoading
+            ? <div className="flex justify-center"><Spinner /></div>
+            : <Button buttonFunction={addNewStudent} buttonText="Add Student"/>
+        }
     </>
   )
 }

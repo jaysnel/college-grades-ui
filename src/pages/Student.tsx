@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import contractABI from '../utils/contractABI.json';
 import Button from "../components/Button";
 import AddCourse from "../components/AddCourse";
+import Spinner from "../components/Spinner";
 
 declare const window: Window &
 typeof globalThis & {
@@ -10,6 +11,7 @@ typeof globalThis & {
 }
 
 export default function Student() {
+    const [isLoading, setIsLoading] = React.useState<boolean>(true);
     const [showModal, setShowModal] = React.useState<boolean>(false);
     const [studentDoesntExist, setStudetnDoesntExist] = React.useState<boolean>(false);
     const [studentGPA, setStudentGPA] = React.useState<number>(0);
@@ -38,8 +40,6 @@ export default function Student() {
             const signer = provider.getSigner();
             const contract = new ethers.Contract(contractAddress, contractABI, signer)
             const student = await contract.getStudentData(studentIdNumber);
-            const studentGPA = await contract.getGPA(studentId);
-            setStudentGPA(Number(studentGPA.toString()));
             if(student.name === '') {
                 setStudetnDoesntExist(true)
             } else {
@@ -50,15 +50,30 @@ export default function Student() {
                     courses: student.courses
                 })
             }
+            // only set GPA if student has courses added, otherwise this errors out and breaks function
+            if(student.courses.length > 0) {
+                const studentGPA = await contract.getGPA(studentId);
+                setStudentGPA(Number(studentGPA.toString()));
+            }
+            setIsLoading(false);
           }
         } catch (err) {
           console.log(err);
+          setIsLoading(false);
         }
       }
 
       useEffect(() => {
         getStudentData();
       }, [])
+
+      if(isLoading) {
+        return (
+            <div className="flex justify-center mt-5">
+                <Spinner />
+            </div>
+        )
+      }
 
   return (
     <>
@@ -69,19 +84,21 @@ export default function Student() {
         :
         <div className={`${showModal ? 'hidden' : 'm-auto flex flex-col justify-center items-center min-h-80 border border-blue-300'}`}>
             <div>
-                <div>
-                    {studentInfo.name}
-                </div>
-                <div>
-                    {studentInfo.age}
-                </div>
-                <div>
-                    {studentInfo.wallet}
+                <div className="my-3">
+                    <div>
+                        <b>Name:</b> {studentInfo.name}
+                    </div>
+                    <div>
+                        <b>Age:</b> {studentInfo.age}
+                    </div>
+                    <div>
+                        <b>Wallet:</b> {studentInfo.wallet}
+                    </div>
                 </div>
                 <>
                 <thead>
                     <tr>
-                        <th className="pr-5">Course</th>
+                        <th className="pr-5">Courses</th>
                         <th className="pr-5">Credits</th>
                         <th className="pr-5">Grade</th>
                         <th className="pr-5">GPA</th>

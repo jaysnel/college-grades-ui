@@ -3,7 +3,7 @@ import Button from './Button'
 import contractABI from '../utils/contractABI.json';
 import collegeCourses from '../utils/collegeCourses.json';
 import collegeCredits from '../utils/collegeCredits.json';
-
+import Spinner from './Spinner';
 
 declare const window: Window &
 typeof globalThis & {
@@ -11,6 +11,7 @@ typeof globalThis & {
 }
 
 export default function AddCourse(props: {showModal: boolean; showCourseModal: any; studentId: number}) {
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const {showModal, showCourseModal, studentId} = props
   const {ethers} = require('ethers');
   const contractAddress = '0x261d5ADa2C89369E1AfCAA98d52dEb124DD9f0Ff';
@@ -35,6 +36,7 @@ export default function AddCourse(props: {showModal: boolean; showCourseModal: a
 
   const addCourse = async () => {
     try {
+      setIsLoading(true);
         const {ethereum} = window;
           if(ethereum) {
             const provider = new ethers.providers.Web3Provider(ethereum);
@@ -50,8 +52,10 @@ export default function AddCourse(props: {showModal: boolean; showCourseModal: a
             }
             console.log(studentCourseData);
           }
+          setIsLoading(false);
         } catch (err) {
           console.log(err);
+          setIsLoading(false);
         }
   }
   return (
@@ -97,7 +101,11 @@ export default function AddCourse(props: {showModal: boolean; showCourseModal: a
             className='w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="number" placeholder="Course Grade" name="courseGrade" id="" />
         </div>
         <div className='w-60 my-5'>
-            <Button buttonFunction={addCourse} buttonText='Add'/>
+            {
+              isLoading
+              ? <div className="flex justify-center"><Spinner /></div>
+              : <Button buttonFunction={addCourse} buttonText='Add'/>
+            }
         </div>
     </div>
   )
