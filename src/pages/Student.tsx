@@ -12,6 +12,7 @@ typeof globalThis & {
 export default function Student() {
     const [showModal, setShowModal] = React.useState<boolean>(false);
     const [studentDoesntExist, setStudetnDoesntExist] = React.useState<boolean>(false);
+    const [studentGPA, setStudentGPA] = React.useState<number>(0);
     const [studentInfo, setStudentInfo] = useState<{
         name: string,
         age: string,
@@ -37,6 +38,8 @@ export default function Student() {
             const signer = provider.getSigner();
             const contract = new ethers.Contract(contractAddress, contractABI, signer)
             const student = await contract.getStudentData(studentIdNumber);
+            const studentGPA = await contract.getGPA(studentId);
+            setStudentGPA(Number(studentGPA.toString()));
             if(student.name === '') {
                 setStudetnDoesntExist(true)
             } else {
@@ -81,6 +84,7 @@ export default function Student() {
                         <th className="pr-5">Course</th>
                         <th className="pr-5">Credits</th>
                         <th className="pr-5">Grade</th>
+                        <th className="pr-5">GPA</th>
                     </tr>
                 </thead>
                 <tbody className=''>
@@ -91,6 +95,7 @@ export default function Student() {
                                     <td className="pr-5">{course['name']}</td>
                                     <td className="pr-5">{Number(course['credits'])}</td>
                                     <td className="pr-5">{Number(course['grade'])}</td>
+                                    {idx === 0 ? <td className="pr-5">{studentGPA}</td> : undefined}
                                 </tr>
                             )
                         })
