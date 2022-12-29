@@ -116,7 +116,7 @@ export default function AddCourse(props: {showModal: boolean; showCourseModal: a
         </div>
         <div className='w-60 my-5'>
             {validationMessage !== '' && <div className='text-center mb-5 text-red-400'>{validationMessage}</div>}
-            {successMessage !== '' && <div className='text-center my-5 text-green-400'>{successMessage}</div> }
+            {successMessage !== '' && <div className='text-center my-5 text-green-600'>{successMessage}</div> }
             {
               isLoading
               ? <div className="flex justify-center"><Spinner /></div>

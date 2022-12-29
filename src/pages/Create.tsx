@@ -85,7 +85,7 @@ export default function Create() {
         value={studentWallet}
         className='w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="text" placeholder="Student Wallet" name="studentWallet" id="" />
         {validationMessage !== '' && <div className='text-center my-5 text-red-400'>{validationMessage}</div>}
-        {successMessage !== '' && <div className='text-center my-5 text-green-400'>{successMessage}</div> }
+        {successMessage !== '' && <div className='text-center my-5 text-green-600'>{successMessage}</div> }
         {
             isLoading
             ? <div className="flex justify-center mt-5"><Spinner /></div>
