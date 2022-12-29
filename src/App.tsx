@@ -15,19 +15,22 @@ declare const window: Window &
 
 function App() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-    
+  const [walletConnected, setWalletConnected] = React.useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = React.useState<string>('');
+  const [noWalletInstalled, setNoWalletInstalled] = React.useState<string>('');
+
   const checkIfWalletIsConnected = async () => {
     try {
       const {ethereum} = window;
       if(ethereum) {
         const accounts = await ethereum.request({method: 'eth_requestAccounts'});
+        
         if(accounts.length !== 0) {
           setWalletConnected(true);
-        } else {
-          setErrorMessage('No wallet found. Connect to a wallet');
         }
+
+      } else {
+        setNoWalletInstalled('No wallet seems to be connected. We recommend MetaMask if you need one.')
       }
       setIsLoading(false);
     } catch (err: any) {
@@ -44,6 +47,12 @@ function App() {
   if(isLoading) {
     return (
       <div className="flex justify-center mt-5"><Spinner /></div>
+    )
+  }
+
+  if(noWalletInstalled !== '') {
+    return (
+      <div className="text-center mt-5">{noWalletInstalled}</div>
     )
   }
 
